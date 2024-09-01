@@ -1,0 +1,74 @@
+{
+  "name": "symbol-case-renamer",
+  "displayName": "Symbol Case Renamer",
+  "description": "Rename symbols using a selected character case, including SCREAMING_CASE, camelCase, snake_case, kebab-case, and PascalCase.",
+  "version": "1.0.1",
+  "publisher": "StevenPribilinskiy",
+  "engines": {
+    "vscode": "^1.75.0"
+  },
+  "categories": [
+    "Formatters"
+  ],
+  "main": "./out/extension.js",
+  "activationEvents": [],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/steven-pribilinskiy/vscode-symbol-case-converter.git"
+  },
+  "contributes": {
+    "commands": [
+      {
+        "command": "symbol-case-renamer.renameToCamelCase",
+        "title": "Rename Symbol to camelCase"
+      },
+      {
+        "command": "symbol-case-renamer.renameToKebabCase",
+        "title": "Rename Symbol to kebab-case"
+      },
+      {
+        "command": "symbol-case-renamer.renameToPascalCase",
+        "title": "Rename Symbol to PascalCase"
+      },
+      {
+        "command": "symbol-case-renamer.renameToScreamingCase",
+        "title": "Rename Symbol to SCREAMING_CASE"
+      },
+      {
+        "command": "symbol-case-renamer.renameToSnakeCase",
+        "title": "Rename Symbol to snake_case"
+      },
+      {
+        "command": "symbol-case-renamer.renameToTitleCase",
+        "title": "Rename Symbol to Title Case"
+      },
+      {
+        "command": "symbol-case-renamer.renameToLowercase",
+        "title": "Rename Symbol to lowercase"
+      },
+      {
+        "command": "symbol-case-renamer.renameToUppercase",
+        "title": "Rename Symbol to UPPERCASE"
+      }
+    ]
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "pretest": "npm run compile && npm run lint",
+    "lint": "eslint src --ext ts",
+    "test": "vscode-test"
+  },
+  "devDependencies": {
+    "@types/vscode": "^1.75.0",
+    "@types/mocha": "^10.0.7",
+    "@types/node": "20.x",
+    "@typescript-eslint/eslint-plugin": "^7.14.1",
+    "@typescript-eslint/parser": "^7.11.0",
+    "eslint": "^8.57.0",
+    "typescript": "^5.4.5",
+    "@vscode/test-cli": "^0.0.9",
+    "@vscode/test-electron": "^2.4.0"
+  }
+}
