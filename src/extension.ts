@@ -1,192 +1,51 @@
 import * as vscode from 'vscode';
-import { toScreamingCase, toCamelCase, toSnakeCase, toKebabCase, toPascalCase, toLowerCase, toTitleCase, toUpperCase } from './utils';
+import {
+    toCamelCase, toKebabCase, toPascalCase, toLowerCase, toScreamingCase, toSnakeCase, toTitleCase, toUpperCase,
+} from './utils';
+
+type CaseConverter = (word: string) => string;
+
+async function renameToCase(converter: CaseConverter) {
+    const editor = vscode.window.activeTextEditor;
+    if (!editor) {
+        return;
+    }
+
+    const position = editor.selection.active;
+    const wordRange = editor.document.getWordRangeAtPosition(position);
+    const word = editor.document.getText(wordRange);
+
+    const newName = converter(word);
+
+    const edit = await vscode.commands.executeCommand<vscode.WorkspaceEdit>(
+        'vscode.executeDocumentRenameProvider',
+        editor.document.uri,
+        position,
+        newName
+    );
+
+    if (edit) {
+        await vscode.workspace.applyEdit(edit);
+    }
+}
 
 export function activate(context: vscode.ExtensionContext) {
-    let disposable = vscode.commands.registerCommand('symbol-case-renamer.renameToScreamingCase', async () => {
-        const editor = vscode.window.activeTextEditor;
-        if (!editor) {
-            return;
-        }
-        const position = editor.selection.active;
-        const wordRange = editor.document.getWordRangeAtPosition(position);
-        const word = editor.document.getText(wordRange);
+    const commandNameCase: { [id: string]: CaseConverter } = {
+        'symbol-case-renamer.renameToCamelCase': toCamelCase,
+        'symbol-case-renamer.renameToKebabCase': toKebabCase,
+        'symbol-case-renamer.renameToLowerCase': toLowerCase,
+        'symbol-case-renamer.renameToPascalCase': toPascalCase,
+        'symbol-case-renamer.renameToScreamingCase': toScreamingCase,
+        'symbol-case-renamer.renameToSnakeCase': toSnakeCase,
+        'symbol-case-renamer.renameToTitleCase': toTitleCase,
+        'symbol-case-renamer.renameToUpperCase': toUpperCase,
+    };
 
-        const newName = toScreamingCase(word);
+    const disposables = Object.entries(commandNameCase).map(([command, converter]) =>
+        vscode.commands.registerCommand(command, () => renameToCase(converter))
+    );
 
-        const edit = await vscode.commands.executeCommand<vscode.WorkspaceEdit>(
-            'vscode.executeDocumentRenameProvider',
-            editor.document.uri,
-            position,
-            newName
-        );
-        if (!edit) {
-            return false;
-        }
-        return vscode.workspace.applyEdit(edit);
-    });
-
-    disposable = vscode.commands.registerCommand('symbol-case-renamer.renameToCamelCase', async () => {
-        const editor = vscode.window.activeTextEditor;
-        if (!editor) {
-            return;
-        }
-        const position = editor.selection.active;
-        const wordRange = editor.document.getWordRangeAtPosition(position);
-        const word = editor.document.getText(wordRange);
-
-        const newName = toCamelCase(word);
-
-        const edit = await vscode.commands.executeCommand<vscode.WorkspaceEdit>(
-            'vscode.executeDocumentRenameProvider',
-            editor.document.uri,
-            position,
-            newName
-        );
-        if (!edit) {
-            return false;
-        }
-        return vscode.workspace.applyEdit(edit);
-    });
-
-    disposable = vscode.commands.registerCommand('symbol-case-renamer.renameToSnakeCase', async () => {
-        const editor = vscode.window.activeTextEditor;
-        if (!editor) {
-            return;
-        }
-        const position = editor.selection.active;
-        const wordRange = editor.document.getWordRangeAtPosition(position);
-        const word = editor.document.getText(wordRange);
-
-        const newName = toSnakeCase(word);
-
-        const edit = await vscode.commands.executeCommand<vscode.WorkspaceEdit>(
-            'vscode.executeDocumentRenameProvider',
-            editor.document.uri,
-            position,
-            newName
-        );
-        if (!edit) {
-            return false;
-        }
-        return vscode.workspace.applyEdit(edit);
-    });
-
-    disposable = vscode.commands.registerCommand('symbol-case-renamer.renameToKebabCase', async () => {
-        const editor = vscode.window.activeTextEditor;
-        if (!editor) {
-            return;
-        }
-        const position = editor.selection.active;
-        const wordRange = editor.document.getWordRangeAtPosition(position);
-        const word = editor.document.getText(wordRange);
-
-        const newName = `"${toKebabCase(word)}"`;
-
-        const edit = await vscode.commands.executeCommand<vscode.WorkspaceEdit>(
-            'vscode.executeDocumentRenameProvider',
-            editor.document.uri,
-            position,
-            newName
-        );
-        if (!edit) {
-            return false;
-        }
-        return vscode.workspace.applyEdit(edit);
-    });
-
-    disposable = vscode.commands.registerCommand('symbol-case-renamer.renameToPascalCase', async () => {
-        const editor = vscode.window.activeTextEditor;
-        if (!editor) {
-            return;
-        }
-        const position = editor.selection.active;
-        const wordRange = editor.document.getWordRangeAtPosition(position);
-        const word = editor.document.getText(wordRange);
-
-        const newName = toPascalCase(word);
-
-        const edit = await vscode.commands.executeCommand<vscode.WorkspaceEdit>(
-            'vscode.executeDocumentRenameProvider',
-            editor.document.uri,
-            position,
-            newName
-        );
-        if (!edit) {
-            return false;
-        }
-        return vscode.workspace.applyEdit(edit);
-    });
-
-    disposable = vscode.commands.registerCommand('symbol-case-renamer.renameToLowerCase', async () => {
-        const editor = vscode.window.activeTextEditor;
-        if (!editor) {
-            return;
-        }
-        const position = editor.selection.active;
-        const wordRange = editor.document.getWordRangeAtPosition(position);
-        const word = editor.document.getText(wordRange);
-
-        const newName = toLowerCase(word);
-
-        const edit = await vscode.commands.executeCommand<vscode.WorkspaceEdit>(
-            'vscode.executeDocumentRenameProvider',
-            editor.document.uri,
-            position,
-            newName
-        );
-        if (!edit) {
-            return false;
-        }
-        return vscode.workspace.applyEdit(edit);
-    });
-
-    disposable = vscode.commands.registerCommand('symbol-case-renamer.renameToTitleCase', async () => {
-        const editor = vscode.window.activeTextEditor;
-        if (!editor) {
-            return;
-        }
-        const position = editor.selection.active;
-        const wordRange = editor.document.getWordRangeAtPosition(position);
-        const word = editor.document.getText(wordRange);
-
-        const newName = toTitleCase(word);
-
-        const edit = await vscode.commands.executeCommand<vscode.WorkspaceEdit>(
-            'vscode.executeDocumentRenameProvider',
-            editor.document.uri,
-            position,
-            newName
-        );
-        if (!edit) {
-            return false;
-        }
-        return vscode.workspace.applyEdit(edit);
-    });
-
-    disposable = vscode.commands.registerCommand('symbol-case-renamer.renameToUpperCase', async () => {
-        const editor = vscode.window.activeTextEditor;
-        if (!editor) {
-            return;
-        }
-        const position = editor.selection.active;
-        const wordRange = editor.document.getWordRangeAtPosition(position);
-        const word = editor.document.getText(wordRange);
-
-        const newName = toUpperCase(word);
-
-        const edit = await vscode.commands.executeCommand<vscode.WorkspaceEdit>(
-            'vscode.executeDocumentRenameProvider',
-            editor.document.uri,
-            position,
-            newName
-        );
-        if (!edit) {
-            return false;
-        }
-        return vscode.workspace.applyEdit(edit);
-    });
-
-    context.subscriptions.push(disposable);
+    context.subscriptions.push(...disposables);
 }
 
 export function deactivate() { }
