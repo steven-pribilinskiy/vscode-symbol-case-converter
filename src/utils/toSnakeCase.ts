@@ -1,3 +1,6 @@
 export function toSnakeCase(word: string): string {
-    return word.toLowerCase().replace(/\s+/g, '_');
+  return word
+    .replace(/([a-z])([A-Z])/g, '$1_$2')
+    .replace(/[\s-]+/g, '_')
+    .toLowerCase();
 }
