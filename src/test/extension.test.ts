@@ -1,15 +1,172 @@
-import * as assert from 'assert';
+import * as assert from 'node:assert';
 
-// You can import and use all API from the 'vscode' module
-// as well as import your extension to test it
 import * as vscode from 'vscode';
-// import * as myExtension from '../../extension';
+
+import {
+  toCamelCase,
+  toConstantCase,
+  toKebabCase,
+  toLowerCase,
+  toPascalCase,
+  toScreamingCase,
+  toSnakeCase,
+  toTitleCase,
+  toUpperCase,
+} from '../utils';
 
 suite('Extension Test Suite', () => {
-	vscode.window.showInformationMessage('Start all tests.');
+  vscode.window.showInformationMessage('Start all tests.');
 
-	test('Sample test', () => {
-		assert.strictEqual(-1, [1, 2, 3].indexOf(5));
-		assert.strictEqual(-1, [1, 2, 3].indexOf(0));
-	});
+  test('renameToCamelCase', async () => {
+    const editor = await vscode.window.activeTextEditor;
+    if (!editor) {
+      return;
+    }
+
+    const selection = editor.selection;
+    const originalText = editor.document.getText(selection);
+
+    await vscode.commands.executeCommand(
+      'symbol-case-renamer.renameToCamelCase',
+    );
+
+    const newText = editor.document.getText(selection);
+    assert.strictEqual(newText, toCamelCase(originalText));
+  });
+
+  test('renameToKebabCase', async () => {
+    const editor = await vscode.window.activeTextEditor;
+    if (!editor) {
+      return;
+    }
+
+    const selection = editor.selection;
+    const originalText = editor.document.getText(selection);
+
+    await vscode.commands.executeCommand(
+      'symbol-case-renamer.renameToKebabCase',
+    );
+
+    const newText = editor.document.getText(selection);
+    assert.strictEqual(newText, toKebabCase(originalText));
+  });
+
+  test('renameToPascalCase', async () => {
+    const editor = await vscode.window.activeTextEditor;
+    if (!editor) {
+      return;
+    }
+
+    const selection = editor.selection;
+    const originalText = editor.document.getText(selection);
+
+    await vscode.commands.executeCommand(
+      'symbol-case-renamer.renameToPascalCase',
+    );
+
+    const newText = editor.document.getText(selection);
+    assert.strictEqual(newText, toPascalCase(originalText));
+  });
+
+  test('renameToScreamingCase', async () => {
+    const editor = await vscode.window.activeTextEditor;
+    if (!editor) {
+      return;
+    }
+
+    const selection = editor.selection;
+    const originalText = editor.document.getText(selection);
+
+    await vscode.commands.executeCommand(
+      'symbol-case-renamer.renameToScreamingCase',
+    );
+
+    const newText = editor.document.getText(selection);
+    assert.strictEqual(newText, toScreamingCase(originalText));
+  });
+
+  test('renameToConstantCase', async () => {
+    const editor = await vscode.window.activeTextEditor;
+    if (!editor) {
+      return;
+    }
+
+    const selection = editor.selection;
+    const originalText = editor.document.getText(selection);
+
+    await vscode.commands.executeCommand(
+      'symbol-case-renamer.renameToConstantCase',
+    );
+
+    const newText = editor.document.getText(selection);
+    assert.strictEqual(newText, toConstantCase(originalText));
+  });
+
+  test('renameToSnakeCase', async () => {
+    const editor = await vscode.window.activeTextEditor;
+    if (!editor) {
+      return;
+    }
+
+    const selection = editor.selection;
+    const originalText = editor.document.getText(selection);
+
+    await vscode.commands.executeCommand(
+      'symbol-case-renamer.renameToSnakeCase',
+    );
+
+    const newText = editor.document.getText(selection);
+    assert.strictEqual(newText, toSnakeCase(originalText));
+  });
+
+  test('renameToTitleCase', async () => {
+    const editor = await vscode.window.activeTextEditor;
+    if (!editor) {
+      return;
+    }
+
+    const selection = editor.selection;
+    const originalText = editor.document.getText(selection);
+
+    await vscode.commands.executeCommand(
+      'symbol-case-renamer.renameToTitleCase',
+    );
+
+    const newText = editor.document.getText(selection);
+    assert.strictEqual(newText, toTitleCase(originalText));
+  });
+
+  test('renameToLowercase', async () => {
+    const editor = await vscode.window.activeTextEditor;
+    if (!editor) {
+      return;
+    }
+
+    const selection = editor.selection;
+    const originalText = editor.document.getText(selection);
+
+    await vscode.commands.executeCommand(
+      'symbol-case-renamer.renameToLowercase',
+    );
+
+    const newText = editor.document.getText(selection);
+    assert.strictEqual(newText, toLowerCase(originalText));
+  });
+
+  test('renameToUppercase', async () => {
+    const editor = await vscode.window.activeTextEditor;
+    if (!editor) {
+      return;
+    }
+
+    const selection = editor.selection;
+    const originalText = editor.document.getText(selection);
+
+    await vscode.commands.executeCommand(
+      'symbol-case-renamer.renameToUppercase',
+    );
+
+    const newText = editor.document.getText(selection);
+    assert.strictEqual(newText, toUpperCase(originalText));
+  });
 });

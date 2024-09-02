@@ -2,13 +2,12 @@
 
 This extension allows you to easily rename symbols in your code using a variety of character cases, including:
 
-* SCREAMING_CASE
 * camelCase
 * snake_case
+* PascalCase/TitleCase
+* SCREAMING_CASE/CONSTANT_CASE
 * kebab-case
-* PascalCase
 * lowercase
-* Title Case
 * UPPERCASE
 
 ## Features
